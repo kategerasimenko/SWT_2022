@@ -10,7 +10,7 @@ UTTERANCE_XPATH = '//ns:sp'
 TEXT_XPATH = './ns:p'
 
 P_REGEX = re.compile(r'<p.*?>(.+?)</p>')
-LOC_REGEX = re.compile(r'(<loc>(.+?)</loc>)')
+LOC_REGEX = re.compile(r'(<loc(.*?)>(.+?)</loc>)')
 SPACE_REGEX = re.compile(r'\s+')
 
 CORPUS_FOLDER = os.path.join('corpus', 'final')
@@ -34,12 +34,14 @@ def process_utterance(lang, play, utterance, prev_utterance):
     curr_utterance = SPACE_REGEX.sub(' ', curr_utterance)
 
     for loc in LOC_REGEX.finditer(curr_utterance):
+        mode = 'fixed' if 'from="manual"' in loc.group(2) else 'auto'
         curr_locs.append([
             lang,
             play,
+            mode,
             prev_utterance,
             curr_utterance[:loc.start()],
-            loc.group(2),
+            loc.group(3),
             curr_utterance[loc.end():],
         ])
 
@@ -85,6 +87,7 @@ def get_kwic_df():
         columns=[
             'lang',
             'play',
+            'extraction_mode',
             'prev_utterance',
             'utterance_left',
             'location',
