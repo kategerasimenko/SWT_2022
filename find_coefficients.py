@@ -84,9 +84,10 @@ def filter_candidates(raw_candidates, subset):
 
 
 def get_accuracy(correct_links, scores):
-    acc = 0
-    total = 0
+    accs = {}
     for lang, locs in scores.items():
+        acc = 0
+        total = 0
         for loc, candidates in locs.items():
             correct = correct_links[lang][loc]
             total += 1
@@ -100,11 +101,18 @@ def get_accuracy(correct_links, scores):
             if first in correct:
                 acc += 1
 
-    return acc / total
+        accs[lang] = acc / total
+
+    return accs
+
+
+def acc_improved(accs, max_accs):
+    return max_accs is None or all(accs[l] > max_accs[l] for l in accs)
+
 
 
 def one_grid_search_run(candidates, stats, correct_links):
-    max_acc = 0
+    max_accs = None
 
     coefs_grid = random.sample(COEFS_GRID, len(COEFS_GRID))
     grid_keys, grid_values = list(zip(*coefs_grid))
@@ -116,15 +124,15 @@ def one_grid_search_run(candidates, stats, correct_links):
             coefs[key] = val
 
             scores = score_candidates(candidates, stats, coefs)
-            acc = get_accuracy(correct_links, scores)
+            accs = get_accuracy(correct_links, scores)
 
-            if acc > max_acc:
-                max_acc = acc
+            if acc_improved(accs, max_accs):
+                max_accs = accs
                 max_val = val
 
         coefs[key] = max_val
 
-    return max_acc, coefs
+    return max_accs, coefs
 
 
 def calculate_default(dev_locs, test_locs, info, correct_links):
@@ -143,14 +151,14 @@ def calculate_default(dev_locs, test_locs, info, correct_links):
 
 
 def grid_search(info, correct_links, dev_locs):
-    overall_max_acc = 0
+    overall_max_acc = None
     best_coefs = None
 
     candidates = filter_candidates(info['candidates'], dev_locs)
 
     for _ in range(50):
         max_acc, coefs = one_grid_search_run(candidates, info['stats'], correct_links)
-        if best_coefs is None or max_acc > overall_max_acc:
+        if best_coefs is None or acc_improved(max_acc, overall_max_acc):
             overall_max_acc = max_acc
             best_coefs = coefs
 
@@ -185,9 +193,9 @@ if __name__ == '__main__':
 
 
 # Coefficients: {'n_labels': 1, 'n_descriptions': 1, 'n_sitelinks': 1, 'n_aliases': 1, 'n_statements': 1, 'n_qualifiers': 1, 'n_references': 1, 'n_links': 'log', 'label': 1, 'aliases': 1}
-# Dev acc: 0.7321428571428571
-# Test acc: 0.7159763313609467
+# Dev acc: {'ru': 0.7608695652173914, 'es': 0.6973684210526315}
+# Test acc: {'ru': 0.6989247311827957, 'es': 0.7368421052631579}
 #
-# Coefficients: {'label': 4, 'n_sitelinks': 1, 'n_links': 0, 'n_descriptions': 1, 'n_aliases': 1, 'n_qualifiers': 1, 'n_references': 1, 'n_labels': 4, 'aliases': 3, 'n_statements': 0}
-# Dev acc: 0.7738095238095238
-# Test acc: 0.7455621301775148
+# Coefficients: {'n_aliases': 0, 'n_references': 1, 'label': 4, 'n_qualifiers': 1, 'n_links': 0, 'n_descriptions': 1, 'n_sitelinks': 2, 'n_statements': 0, 'n_labels': 1, 'aliases': 3}
+# Dev acc: {'ru': 0.8043478260869565, 'es': 0.7368421052631579}
+# Test acc: {'ru': 0.7419354838709677, 'es': 0.7631578947368421}
