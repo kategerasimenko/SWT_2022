@@ -198,4 +198,4 @@ if __name__ == '__main__':
 #
 # Coefficients: {'n_aliases': 0, 'n_references': 1, 'label': 4, 'n_qualifiers': 1, 'n_links': 0, 'n_descriptions': 1, 'n_sitelinks': 2, 'n_statements': 0, 'n_labels': 1, 'aliases': 3}
 # Dev acc: {'ru': 0.8043478260869565, 'es': 0.7368421052631579}
-# Test acc: {'ru': 0.7419354838709677, 'es': 0.7631578947368421}
+# Test acc: {'ru': 0.7419354838709677, 'es': 0.7763157894736842}

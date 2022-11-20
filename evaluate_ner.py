@@ -58,4 +58,4 @@ for lang in LANGS:
 #
 # span, 10 plays
 # precision: 0.739961759082218
-# recall: 0.9923076923076923
+# recall: 0.979746835443038
