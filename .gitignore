@@ -129,3 +129,15 @@ dmypy.json
 .pyre/
 
 secrets.py
+.DS_Store
+babelfy_*.csv
+babelfy_*.json
+wikidata_*.csv
+wikidata_*.json
+genre_*.csv
+genre_*.json
+location_kwic.csv
+location_counts.json
+plays_with_location_indices.json
+locations.owl
+pics/*
