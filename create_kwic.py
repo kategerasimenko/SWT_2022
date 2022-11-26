@@ -14,7 +14,7 @@ LOC_REGEX = re.compile(r'(<loc(.*?)>(.+?)</loc>)')
 SPACE_REGEX = re.compile(r'\s+')
 
 CORPUS_FOLDER = os.path.join('corpus', 'final')
-KWIC_FILENAME = 'location_kwic.csv'
+KWIC_FILENAME = os.path.join('intermediate_data_files', 'location_kwic.csv')
 
 LANGS = {
     'rus': 'ru',

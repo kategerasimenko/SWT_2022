@@ -1,17 +1,18 @@
+import os
 import json
 from collections import Counter
 
 import pandas as pd
 
-from create_kwic import KWIC_FILENAME
-
 
 TOP_LINKS = 5
 GENRE_THRESHOLD = -0.65
 
-WIKIDATA_LINKS_FILENAME = 'wikidata_ranking.json'
-NORMALIZED_LOCATIONS_FILENAME = 'locations_normalized.json'
-GENRE_LINKS_FILENAME = 'genre_ranking.json'
+DATA_DIR = 'intermediate_data_files'
+KWIC_FILENAME = os.path.join(DATA_DIR, 'location_kwic.csv')
+WIKIDATA_LINKS_FILENAME = os.path.join(DATA_DIR, 'wikidata_ranking.json')
+NORMALIZED_LOCATIONS_FILENAME = os.path.join(DATA_DIR, 'locations_normalized.json')
+GENRE_LINKS_FILENAME = os.path.join(DATA_DIR, 'genre_ranking.json')
 
 FINAL_LINKS_FILENAME = '%s_location_links.csv'
 HEADER = [f'link{i+1}' for i in range(TOP_LINKS)]

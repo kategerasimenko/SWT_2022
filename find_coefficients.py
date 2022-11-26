@@ -1,10 +1,10 @@
+import os
 import json
 import random
 from collections import defaultdict
 
 import pandas as pd
 
-from create_kwic import KWIC_FILENAME
 from wikidata import score_candidates
 
 
@@ -15,8 +15,13 @@ LANGS = {
     'span': 'es'
 }
 
-NORMALIZED_LOCATIONS_FILENAME = 'locations_normalized.json'
-LOC_INFO_FILENAME = 'wikidata_locations_info.json'
+
+DATA_DIR = 'intermediate_data_files'
+ANN_DIR = 'disambiguation_annotation'
+KWIC_FILENAME = os.path.join(DATA_DIR, 'location_kwic.csv')
+CORRECT_LINKS_FILENAME = os.path.join(ANN_DIR, 'correct_links.csv')
+NORMALIZED_LOCATIONS_FILENAME = os.path.join(DATA_DIR, 'locations_normalized.json')
+LOC_INFO_FILENAME = os.path.join(DATA_DIR, 'wikidata_locations_info.json')
 COEFS_FILENAME = 'coefficients.json'
 
 COEFS_GRID = [
@@ -44,7 +49,7 @@ def get_correct_links():
     with open(NORMALIZED_LOCATIONS_FILENAME) as f:
         normalized_locations = json.load(f)
 
-    with open('correct_links.csv') as f:
+    with open(CORRECT_LINKS_FILENAME) as f:
         raw_links = f.read().split('\n')
 
     assert len(raw_links) == len(locations)
@@ -108,7 +113,6 @@ def get_accuracy(correct_links, scores):
 
 def acc_improved(accs, max_accs):
     return max_accs is None or all(accs[l] > max_accs[l] for l in accs)
-
 
 
 def one_grid_search_run(candidates, stats, correct_links):

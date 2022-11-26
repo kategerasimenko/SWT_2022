@@ -1,14 +1,17 @@
+import os
 import json
 from collections import defaultdict
 
 import pandas as pd
 from pymorphy2 import MorphAnalyzer
 
-from create_kwic import KWIC_FILENAME
-
 
 # Create a list of locations with their normalized versions.
 # Resulting file must be manually corrected for Russian (normalization errors).
+
+DATA_DIR = 'intermediate_data_files'
+KWIC_FILENAME = os.path.join(DATA_DIR, 'location_kwic.csv')
+NORMALIZED_LOCATIONS_FILENAME = os.path.join(DATA_DIR, 'locations_normalized.json')
 
 m = MorphAnalyzer()
 
@@ -65,5 +68,5 @@ if __name__ == '__main__':
             norm_loc = location_to_nomn(loc) if lang == 'rus' else loc
             norm_locs[LANG_MAPPING[lang]][loc] = norm_loc
 
-    with open('locations_normalized.json', 'w') as f:
+    with open(NORMALIZED_LOCATIONS_FILENAME, 'w') as f:
         json.dump(norm_locs, f, ensure_ascii=False, indent=2)

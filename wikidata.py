@@ -1,17 +1,20 @@
 import re
+import os
 import json
 import requests
 from time import sleep
 from math import log
 from collections import defaultdict
 
+from secrets import EMAIL
 
-NORM_LOC_FILENAME = 'locations_normalized.json'
-LOC_INFO_FILENAME = 'wikidata_locations_info.json'
-RANKING_FILENAME = 'wikidata_ranking.json'
+
+DATA_DIR = 'intermediate_data_files'
+LOC_INFO_FILENAME = os.path.join(DATA_DIR, 'wikidata_locations_info.json')
+RANKING_FILENAME = os.path.join(DATA_DIR, 'wikidata_ranking.json')
+NORM_LOC_FILENAME = os.path.join(DATA_DIR, 'locations_normalized.json')
 COEFS_FILENAME = 'coefficients.json'
 
-EMAIL = 'e.garanina@student.rug.nl'
 SPARQL_URL = 'https://query.wikidata.org/sparql'  # for SPARQL queries
 ENTITY_URL = 'https://www.wikidata.org/wiki/Special:EntityData/%s.json'  # for retrieving entities by ID
 USER_AGENT = {'User-Agent': f'Location extractor ({EMAIL})'}  # to avoid ban
