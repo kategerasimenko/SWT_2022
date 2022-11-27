@@ -137,7 +137,7 @@ wikidata_*.json
 genre_*.csv
 genre_*.json
 location_kwic.csv
-location_counts.json
+corpus_ontology_info.json
 plays_with_location_indices.json
 locations.owl
 pics/*
